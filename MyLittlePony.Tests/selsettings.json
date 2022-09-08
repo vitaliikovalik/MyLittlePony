@@ -1,0 +1,16 @@
+{
+  "DriverConfiguration": {
+    "DriverType": "Edge",
+    "RunRemote": false,
+    "Maximize": false,
+    "Width": 500,
+    "Height": 800,
+    "RemoteDriverConfiguration": {
+      "UserName": "",
+      "AccessKey": "",
+      "BrowserVersion": "",
+      "Url": ""
+    },
+    "ImplicitWait": 2
+  }
+}
