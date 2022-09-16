@@ -17,7 +17,7 @@ namespace MyLittlePony.Tests
         [OneTimeTearDown]
         public void ProjectOneTimeTearDown()
         {
-            Driver.KillAllDriverProcess();
+            Driver.KillAllDriverProcess(DriverSettings.DriverInfo.DriverType);
         }
     }
 }

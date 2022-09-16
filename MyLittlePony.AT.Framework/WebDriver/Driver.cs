@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using MyLittlePony.AT.Framework.Configuration;
-using MyLittlePony.AT.Framework.Configuration.Model;
-using MyLittlePony.AT.Framework.WebDriver.Enum;
+﻿using MyLittlePony.AT.Framework.WebDriver.Enum;
 using OpenQA.Selenium;
+using System;
+using System.Diagnostics;
 
 namespace MyLittlePony.AT.Framework.WebDriver
 {
@@ -24,6 +22,7 @@ namespace MyLittlePony.AT.Framework.WebDriver
         {
             _driver.Close();
             _driver.Quit();
+            _driver.Dispose();
 
             _driver = null;
         }
@@ -40,15 +39,14 @@ namespace MyLittlePony.AT.Framework.WebDriver
                     break;
                 case DriverType.Firefox:
                 case DriverType.FirefoxHeadless:
-                    driverName = "firefox";
+                    driverName = "geckodriver";
                     break;
                 case DriverType.Edge:
                 case DriverType.EdgeHeadless:
-                    driverName = "edge";
+                    driverName = "msedgewebview2";
                     break;
                 case DriverType.InternetExplorer:
-                    driverName = "internetExplorer";
-                    break;
+                    throw new NotImplementedException($"'{type}' is not implemented yet!");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
