@@ -1,6 +1,7 @@
 ﻿using MyLittlePony.AT.Framework;
 using MyLittlePony.AT.Framework.Configuration;
 using MyLittlePony.AT.Framework.Configuration.Model;
+using MyLittlePony.AT.Framework.Logger;
 using MyLittlePony.AT.Framework.WebDriver;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -16,6 +17,7 @@ namespace MyLittlePony.Tests.Base
         [SetUp]
         public void Setup()
         {
+            Logger.InitNewLogger(TestContext.CurrentContext.Test.FullName);
             var abc = ConfigurationHelper.GetConfiguration()["EnviromentConf:BaseUrl"];
             var abc2 = ConfigurationHelper.GetBindConfiguration<DriverInfo>(configName: "selsettings.json", section: "DriverConfiguration");
         }

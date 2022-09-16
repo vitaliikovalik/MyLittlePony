@@ -1,6 +1,6 @@
 {
   "DriverConfiguration": {
-    "DriverType": "Edge",
+    "DriverType": "Chrome",
     "RunRemote": false,
     "Maximize": false,
     "Width": 500,
