@@ -1,9 +1,9 @@
-﻿using MyLittlePony.AT.Framework.WebDriver.Enum;
-using OpenQA.Selenium;
-using System;
+﻿using System;
 using System.Diagnostics;
+using MyLittlePony.AT.Selenium.WebDriver.Enum;
+using OpenQA.Selenium;
 
-namespace MyLittlePony.AT.Framework.WebDriver
+namespace MyLittlePony.AT.Selenium.WebDriver
 {
     public static class Driver
     {

@@ -1,12 +1,12 @@
-﻿using MyLittlePony.AT.Framework.WebDriver.Enum;
+﻿using System;
+using MyLittlePony.AT.Selenium.WebDriver.ConfModel;
+using MyLittlePony.AT.Selenium.WebDriver.Enum;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using System;
-using MyLittlePony.AT.Framework.Configuration.Model;
 
-namespace MyLittlePony.AT.Framework.WebDriver
+namespace MyLittlePony.AT.Selenium.WebDriver
 {
     public class DriverFactory
     {

@@ -1,7 +1,7 @@
 ﻿using MyLittlePony.AT.Framework.Configuration;
-using MyLittlePony.AT.Framework.Configuration.Model;
+using MyLittlePony.AT.Selenium.WebDriver.ConfModel;
 
-namespace MyLittlePony.AT.Framework.WebDriver
+namespace MyLittlePony.AT.Selenium.WebDriver
 {
     public static class DriverSettings
     {

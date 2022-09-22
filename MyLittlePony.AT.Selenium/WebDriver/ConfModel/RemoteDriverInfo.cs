@@ -1,4 +1,4 @@
-﻿namespace MyLittlePony.AT.Framework.Configuration.Model
+﻿namespace MyLittlePony.AT.Selenium.WebDriver.ConfModel
 {
     public class RemoteDriverInfo
     {

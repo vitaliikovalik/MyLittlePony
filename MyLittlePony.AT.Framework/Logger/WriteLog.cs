@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace MyLittlePony.AT.Framework.Logger
 {
-    public static class Logger
+    public static class WriteLog
     {
         [ThreadStatic]
         private static ILog _log;
@@ -24,7 +24,7 @@ namespace MyLittlePony.AT.Framework.Logger
             _log.Debug(message);
         }
 
-        public static void NewLine(int value = 1)
+        public static string NewLine(int value = 1)
         {
             var emptyLine = string.Empty;
 
@@ -33,7 +33,7 @@ namespace MyLittlePony.AT.Framework.Logger
                 emptyLine += Environment.NewLine;
             }
 
-            Info(emptyLine);
+            return  emptyLine;
         }
 
         public static void Info(object message)
@@ -51,7 +51,7 @@ namespace MyLittlePony.AT.Framework.Logger
             _log.Warn(message);
         }
 
-        #region Logger Extentions
+        #region WriteLog Extentions
 
         public static IWebElement LogDebug(this IWebElement element, object message)
         {
@@ -68,18 +68,24 @@ namespace MyLittlePony.AT.Framework.Logger
         }
         #endregion
 
-        #region Logger zones
+        #region WriteLog zones
 
-        public static void ElementDiagnostic(string message)
+        public static void ElementDiagnostic(string message, int emptyLineCount = 0)
         {
             if (LoggerSettings.LoggerInfo.ElementDiagnostic)
-                Debug($"[ELEMENT_DIAGNOSTIC] {message}");
+                Debug($"[ELEMENT_DIAGNOSTIC] {message}" + NewLine(emptyLineCount));
         }
 
-        public static void TestStepLog(string message)
+        public static void JavascriptDiagnostics(string message, int emptyLineCount = 1)
+        {
+            if (LoggerSettings.LoggerInfo.JavascriptDiagnostics)
+                Debug($"[JAVA_SCRIPT_DIAGNOSTIC] {message}" + NewLine(emptyLineCount));
+        }
+
+        public static void TestStepLog(string message, int emptyLineCount = 3)
         {
             if (LoggerSettings.LoggerInfo.TestStepLog)
-                Info($"[TEST_STEP_LOG] {message}");
+                Info($"[TEST_STEP_LOG] {message}" + NewLine(emptyLineCount));
         }
         #endregion
 

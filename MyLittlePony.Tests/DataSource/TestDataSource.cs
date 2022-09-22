@@ -10,15 +10,12 @@ namespace MyLittlePony.Tests.DataSource
         {
             get
             {
-                yield return new TestCaseData(new LoginInfo() { UserName = "Admin", Password = "12345" })
+                yield return new TestCaseData(new LoginInfo() { UserName = "vitalii", Password = "tuqd3" })
                     .SetCategory("Smoke")
-                    .SetName("{m}AdminTest");
-                yield return new TestCaseData(new LoginInfo() { UserName = "NotAdmin", Password = "12345" })
+                    .SetName("{m}ViaUserNameTest");
+                yield return new TestCaseData(new LoginInfo() { UserName = "vitaliikovaliuk@icloud.com", Password = "tuqd3" })
                     .SetCategory("Regression")
-                    .SetName("{m}NotAdminTest");
-                yield return new TestCaseData(new LoginInfo() { UserName = "NotExistingUser", Password = "12345" })
-                    .SetCategory("Regression")
-                    .SetName("{m}NotExistingTest");
+                    .SetName("{m}ViaEmailTest");
             }
         }
     }

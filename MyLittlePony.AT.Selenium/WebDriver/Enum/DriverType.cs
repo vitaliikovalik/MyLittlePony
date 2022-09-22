@@ -1,4 +1,4 @@
-﻿namespace MyLittlePony.AT.Framework.WebDriver.Enum
+﻿namespace MyLittlePony.AT.Selenium.WebDriver.Enum
 {
     public enum DriverType
     {

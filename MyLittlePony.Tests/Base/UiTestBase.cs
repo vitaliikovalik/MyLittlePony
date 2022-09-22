@@ -2,7 +2,7 @@
 using MyLittlePony.AT.Framework.Configuration;
 using MyLittlePony.AT.Framework.Configuration.Model;
 using MyLittlePony.AT.Framework.Logger;
-using MyLittlePony.AT.Framework.WebDriver;
+using MyLittlePony.AT.Selenium.WebDriver;
 using NUnit.Framework;
 using OpenQA.Selenium;
 
@@ -12,14 +12,12 @@ namespace MyLittlePony.Tests.Base
     [Parallelizable(scope: ParallelScope.All)]
     public class UiTestBase : TestBase
     {
-        protected readonly string BaseUrl = ConfigurationHelper.GetConfiguration()["EnvironmentConf:BaseUrl"];
+        protected EnvironmentInfo EnvironmentInfo = ConfigurationHelper.GetBindConfiguration<EnvironmentInfo>("EnvironmentConf");
 
         [SetUp]
         public void Setup()
         {
-            Logger.InitNewLogger(TestContext.CurrentContext.Test.FullName);
-            var abc = ConfigurationHelper.GetConfiguration()["EnviromentConf:BaseUrl"];
-            var abc2 = ConfigurationHelper.GetBindConfiguration<DriverInfo>(configName: "selsettings.json", section: "DriverConfiguration");
+            WriteLog.InitNewLogger(TestContext.CurrentContext.Test.FullName);
         }
 
         [TearDown]

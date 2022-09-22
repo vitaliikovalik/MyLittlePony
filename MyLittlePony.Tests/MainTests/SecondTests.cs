@@ -1,6 +1,7 @@
-﻿using MyLittlePony.AT.Framework.Logger;
-using MyLittlePony.AT.Framework.WebDriver;
+﻿using MyLittlePony.AT.Framework.Models;
+using MyLittlePony.AT.Selenium.WebDriver;
 using MyLittlePony.Tests.Base;
+using MyLittlePony.Tests.PageObjects;
 using NUnit.Framework;
 
 namespace MyLittlePony.Tests.MainTests
@@ -9,31 +10,15 @@ namespace MyLittlePony.Tests.MainTests
     public class SecondTests : UiTestBase
     {
         [Test]
-        public void Test01()
+        public void SignUpTest()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
-        }
+            var loginPage = new LoginPage();
 
-        [Test]
-        public void Test02()
-        {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
-        }
+            TestStep($"Open Url '{EnvironmentInfo.BaseUrl}'", () =>
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentInfo.BaseUrl));
 
-        [Test]
-        public void Test03()
-        {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
-        }
-
-        [Test]
-        public void Test04()
-        {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            TestStep($"Login as {EnvironmentInfo.DefaultUserName}", () =>
+                    loginPage.Login(new LoginInfo() { UserName = EnvironmentInfo.DefaultUserName, Password = EnvironmentInfo.DefaultPassword }));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MyLittlePony.AT.Framework.Logger;
-using MyLittlePony.AT.Framework.WebDriver;
+using MyLittlePony.AT.Selenium.WebDriver;
 using NUnit.Framework;
 
 [assembly: LevelOfParallelism(6)]
@@ -11,7 +11,7 @@ namespace MyLittlePony.Tests
         [OneTimeSetUp]
         public void ProjectOneTimeSetUp()
         {
-            Logger.InitNewLogger(nameof(ProjectSetUp));
+            WriteLog.InitNewLogger(nameof(ProjectSetUp));
         }
         
         [OneTimeTearDown]

@@ -1,10 +1,9 @@
-﻿using MyLittlePony.AT.Framework.Logger;
-using MyLittlePony.AT.Framework.Models;
-using MyLittlePony.AT.Framework.WebDriver;
+﻿using MyLittlePony.AT.Framework.Models;
+using MyLittlePony.AT.Selenium.WebDriver;
 using MyLittlePony.Tests.Base;
 using MyLittlePony.Tests.DataSource;
+using MyLittlePony.Tests.PageObjects;
 using NUnit.Framework;
-using OpenQA.Selenium;
 
 namespace MyLittlePony.Tests.MainTests
 {
@@ -15,38 +14,37 @@ namespace MyLittlePony.Tests.MainTests
         [TestCaseSource(typeof(TestDataSource), nameof(TestDataSource.LoginTestCases))]
         public void LoginUser(LoginInfo info)
         {
-            Logger.TestStepLog($"Step1 - Open Url '{BaseUrl}'");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            var loginPage = new LoginPage();
 
-            Logger.TestStepLog($"Step2 - Set UserName '{info.UserName}'");
-            Driver.GetDriver().FindElement(By.CssSelector("#ctl00_CPHContainer_txtUserLogin")).SendKeys(info.UserName);
+            TestStep($"Open Url '{EnvironmentInfo.BaseUrl}'", () =>
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentInfo.BaseUrl));
 
-            Logger.TestStepLog($"Step3 - Set Password '{info.Password}'");
-            Driver.GetDriver().FindElement(By.CssSelector("#ctl00_CPHContainer_txtPassword")).SendKeys(info.Password);
+            TestStep("Init login, an d assert result", () =>
+            {
+                loginPage.Login(info);
 
-            Logger.TestStepLog("Step3 - Click Login button ");
-            Driver.GetDriver().FindElement(By.CssSelector("#ctl00_CPHContainer_btnLoginn")).Click();
+                //Assert login passed or failed
+            });
         }
 
         [Test]
-        public void Test02()
+        public void AssertLoginUi()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
-        }
+            var loginPage = new LoginPage();
 
-        [Test]
-        public void Test03()
-        {
-            Logger.Info($"Test03");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
-        }
+            TestStep($"Open Url '{EnvironmentInfo.BaseUrl}'", () =>
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentInfo.BaseUrl));
 
-        [Test]
-        public void Test04()
-        {
-            Logger.Info($"Test04");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            TestStep("Verify Ui login box", () =>
+            {
+                Assert.Multiple(() =>
+                {
+                    Assert.AreEqual(loginPage.UserLogin.ExpectedTitle, loginPage.UserLogin.Title);
+                    Assert.AreEqual(loginPage.Password.ExpectedTitle, loginPage.Password.Title);
+
+                    Assert.AreEqual(loginPage.BtnLogin.ButtonText, loginPage.BtnLogin.Value);
+                });
+            });
         }
     }
 }
