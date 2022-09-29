@@ -14,9 +14,17 @@ namespace MyLittlePony.AT.Framework.Logger
         [ThreadStatic]
         private static ILog _log;
 
+        [ThreadStatic]
+        private static DirectoryInfo _testDirectory;
+
         public static ILog GetLogger()
         {
             return _log;
+        }
+
+        public static DirectoryInfo GetTestDirectoryPath()
+        {
+            return _testDirectory;
         }
 
         public static void Debug(object message)
@@ -91,12 +99,13 @@ namespace MyLittlePony.AT.Framework.Logger
 
         public static void InitNewLogger(string fileName)
         {
-            var di = Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}/Logs/{fileName}");
+            _testDirectory = Directory.CreateDirectory($"{Directory.GetCurrentDirectory()}/Logs/{fileName}");
+           
 
             ILoggerRepository repository = LogManager.CreateRepository($"Log4net.{fileName}");
 
             SetLevel(repository.Name, LoggerSettings.LoggerInfo.LogLevel);
-            AddAppender(repository.Name, CreateFileAppender($"{fileName}", $"{di.FullName}\\{fileName}_{DateTime.Now:MMDDHHmmss}.log"));
+            AddAppender(repository.Name, CreateFileAppender($"{fileName}", $"{_testDirectory.FullName}\\{fileName}_{DateTime.Now:MMDDHHmmss}.log"));
             AddAppender(repository.Name, CreateConsoleAppender($"{fileName}"));
         }
 

@@ -17,10 +17,15 @@ namespace MyLittlePony.AT.Selenium.Helpers
 
             return element;
         }
-
-        public static void PageLoadIsComplete()
+        
+        public static void ConditionIsMet(Func<IWebDriver, bool> condition, TimeSpan? timeout = null, string message = null)
         {
-            WaitUntil(x => JsExecutor.ExecuteScript("return document.readyState").Equals("complete"), DriverSettings.DriverInfo.TimeoutsInfo.PageLoadTimeout);
+            timeout ??= DriverSettings.DriverInfo.TimeoutsInfo.ElementTimeout;
+
+            var wait = new WebDriverWait(Driver.GetDriver(), timeout.Value);
+            wait.Message = string.IsNullOrEmpty(message) ? $"Wait condition not met after {wait.Timeout.TotalSeconds} seconds." : message;
+
+            wait.Until(condition);
         }
     }
 }

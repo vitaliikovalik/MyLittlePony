@@ -1,4 +1,4 @@
-﻿namespace MyLittlePony.AT.Framework.Configuration.Model
+﻿namespace MyLittlePony.AT.Framework.Models
 {
     public class LoggerInfo
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace MyLittlePony.AT.Framework.Configuration
+namespace MyLittlePony.AT.Framework.Helpers
 {
     public static class ConfigurationHelper
     {

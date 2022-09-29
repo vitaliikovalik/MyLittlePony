@@ -1,10 +1,9 @@
 ﻿using MyLittlePony.AT.Framework;
-using MyLittlePony.AT.Framework.Configuration;
-using MyLittlePony.AT.Framework.Configuration.Model;
 using MyLittlePony.AT.Framework.Logger;
 using MyLittlePony.AT.Selenium.WebDriver;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using System;
 
 namespace MyLittlePony.Tests.Base
 {
@@ -12,8 +11,6 @@ namespace MyLittlePony.Tests.Base
     [Parallelizable(scope: ParallelScope.All)]
     public class UiTestBase : TestBase
     {
-        protected EnvironmentInfo EnvironmentInfo = ConfigurationHelper.GetBindConfiguration<EnvironmentInfo>("EnvironmentConf");
-
         [SetUp]
         public void Setup()
         {
@@ -23,10 +20,22 @@ namespace MyLittlePony.Tests.Base
         [TearDown]
         public void TearDown()
         {
-            var browserLogs = Driver.GetDriver().Manage().Logs.GetLog(LogType.Browser);
-            var performanceLogs = Driver.GetDriver().Manage().Logs.GetLog(LogType.Performance);
-
             Driver.QuiteDriver();
+        }
+
+        protected override void HandleException()
+        {
+            try
+            {
+                TestAttachedFilePaths.Add(Driver.MakeScreenShot());
+                TestAttachedFilePaths.Add(WriteLog.GetLogFilePath(TestContext.CurrentContext.Test.FullName));
+                TestAttachedFilePaths.Add(Driver.SaveBrowserLog(LogType.Browser));
+                TestAttachedFilePaths.Add(Driver.SaveBrowserLog(LogType.Performance));
+            }
+            catch (Exception ex)
+            {
+                WriteLog.Error($"Take ScreenShot or Browser Logs failed!, {ex}");
+            }
         }
     }
 }

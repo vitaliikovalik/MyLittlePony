@@ -20,15 +20,13 @@ namespace MyLittlePony.Tests.PageObjects
 
         #region POM Methods
 
-        public void Login(LoginInfo info)
+        public void SetLoginForm(LoginInfo info)
         {
-            WaitUtilities.PageLoadIsComplete();
+            WaitUtilities.ConditionIsMet(ExpectedConditions.PageLoadIsComplete());
 
             UserLogin.SetValue(info.UserName);
             Password.SetValue(info.Password);
             BtnLogin.Click();
-
-            WaitUtilities.WaitUntil(x => BtnLogin.IsElementAbsent(), message: "Login Failed, BtnLogin do not disappear");
         }
         #endregion
     }

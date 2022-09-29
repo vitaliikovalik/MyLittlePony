@@ -1,4 +1,4 @@
-﻿using MyLittlePony.AT.Framework.Configuration;
+﻿using MyLittlePony.AT.Framework.Helpers;
 using MyLittlePony.AT.Selenium.WebDriver.ConfModel;
 
 namespace MyLittlePony.AT.Selenium.WebDriver

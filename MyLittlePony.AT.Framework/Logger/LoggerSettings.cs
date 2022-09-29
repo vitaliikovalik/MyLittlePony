@@ -1,5 +1,5 @@
-﻿using MyLittlePony.AT.Framework.Configuration;
-using MyLittlePony.AT.Framework.Configuration.Model;
+﻿using MyLittlePony.AT.Framework.Helpers;
+using MyLittlePony.AT.Framework.Models;
 
 namespace MyLittlePony.AT.Framework.Logger
 {

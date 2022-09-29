@@ -1,6 +1,10 @@
-﻿using MyLittlePony.AT.Framework.Models;
+﻿using MyLittlePony.AT.Framework;
+using MyLittlePony.AT.Framework.CustomAttributes;
+using MyLittlePony.AT.Framework.Models;
+using MyLittlePony.AT.Framework.Models.Enums;
 using MyLittlePony.AT.Selenium.WebDriver;
 using MyLittlePony.Tests.Base;
+using MyLittlePony.Tests.BusinessActions;
 using MyLittlePony.Tests.DataSource;
 using MyLittlePony.Tests.PageObjects;
 using NUnit.Framework;
@@ -14,17 +18,8 @@ namespace MyLittlePony.Tests.MainTests
         [TestCaseSource(typeof(TestDataSource), nameof(TestDataSource.LoginTestCases))]
         public void LoginUser(LoginInfo info)
         {
-            var loginPage = new LoginPage();
-
-            TestStep($"Open Url '{EnvironmentInfo.BaseUrl}'", () =>
-                Driver.GetDriver().Navigate().GoToUrl(EnvironmentInfo.BaseUrl));
-
-            TestStep("Init login, an d assert result", () =>
-            {
-                loginPage.Login(info);
-
-                //Assert login passed or failed
-            });
+            TestStep($"SetLoginForm as {EnvironmentSettings.EnvironmentInfo.DefaultUserName}", () =>
+                new LoginActions().Login(info));
         }
 
         [Test]
@@ -32,8 +27,8 @@ namespace MyLittlePony.Tests.MainTests
         {
             var loginPage = new LoginPage();
 
-            TestStep($"Open Url '{EnvironmentInfo.BaseUrl}'", () =>
-                Driver.GetDriver().Navigate().GoToUrl(EnvironmentInfo.BaseUrl));
+            TestStep($"Open Url '{EnvironmentSettings.EnvironmentInfo.BaseUrl}'", () =>
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentSettings.EnvironmentInfo.BaseUrl));
 
             TestStep("Verify Ui login box", () =>
             {
@@ -45,6 +40,14 @@ namespace MyLittlePony.Tests.MainTests
                     Assert.AreEqual(loginPage.BtnLogin.ButtonText, loginPage.BtnLogin.Value);
                 });
             });
+        }
+
+        [Test]
+        [SkipIfEnvironment(EnvironmentType.Stg)]
+        public void TestSkipIfEnvironmentAttribute()
+        {
+            TestStep($"Open Url '{EnvironmentSettings.EnvironmentInfo.BaseUrl}'", () =>
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentSettings.EnvironmentInfo.BaseUrl));
         }
     }
 }
