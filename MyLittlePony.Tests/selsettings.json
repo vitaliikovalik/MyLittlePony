@@ -1,16 +1,23 @@
 {
   "DriverConfiguration": {
     "DriverType": "Chrome",
-    "RunRemote": false,
-    "Maximize": false,
+    "RunRemote": true,
+    "Maximize": true,
     "Width": 500,
     "Height": 800,
-    "RemoteDriverConfiguration": {
+    "RemoteDriverInfo": {
       "UserName": "",
       "AccessKey": "",
-      "BrowserVersion": "",
-      "Url": ""
+      "EnableVNC": true,
+      "EnableVideo": false,
+      "SeleniumVersion": "4.5.1",
+      "BrowserVersion": "105.0",
+      "Url": "http://18.224.21.209:4444/wd/hub"
     },
-    "ImplicitWait": 2
+    "TimeoutsInfo": {
+      "ElementTimeout": "00:00:15",
+      "ImplicitWait": "00:00:00",
+      "PageLoadTimeout": "00:00:30"
+    }
   }
 }

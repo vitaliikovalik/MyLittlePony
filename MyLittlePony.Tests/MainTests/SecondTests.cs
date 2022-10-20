@@ -1,6 +1,14 @@
-﻿using MyLittlePony.AT.Framework.Logger;
-using MyLittlePony.AT.Framework.WebDriver;
+﻿using MyLittlePony.AT.Framework;
+using MyLittlePony.AT.Framework.CustomExceptions;
+using MyLittlePony.AT.Framework.Extensions;
+using MyLittlePony.AT.Framework.Logger;
+using MyLittlePony.AT.Framework.Models;
+using MyLittlePony.AT.Framework.Models.Enums;
+using MyLittlePony.AT.Selenium.Helpers;
+using MyLittlePony.AT.Selenium.WebDriver;
 using MyLittlePony.Tests.Base;
+using MyLittlePony.Tests.BusinessActions;
+using MyLittlePony.Tests.PageObjects;
 using NUnit.Framework;
 
 namespace MyLittlePony.Tests.MainTests
@@ -9,31 +17,62 @@ namespace MyLittlePony.Tests.MainTests
     public class SecondTests : UiTestBase
     {
         [Test]
-        public void Test01()
+        public void SignUpTest()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            var user = new LoginInfo()
+            {
+                UserName = EnvironmentSettings.EnvironmentInfo.DefaultUserName,
+                Password = EnvironmentSettings.EnvironmentInfo.DefaultPassword
+            };
+            
+            TestStep($"Login as {EnvironmentSettings.EnvironmentInfo.DefaultUserName}", () =>
+                new LoginActions().Login(user));
         }
 
         [Test]
-        public void Test02()
+        public void TestEnumExtensions()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            var findEnumByDescription = "DEV Environment";
+
+            TestStep("Test Enum Extensions - GetDescription", () =>
+            {
+                var envName = EnvironmentSettings.EnvironmentInfo.EnvironmentType.GetDescription();
+                WriteLog.Info(envName);
+            });
+
+            TestStep("Test Enum Extensions - GetValueFromDescription<EnvironmentType>", () =>
+            {
+                var envName = findEnumByDescription.GetValueFromDescription<EnvironmentType>();
+                WriteLog.Info(envName);
+            });
         }
 
         [Test]
-        public void Test03()
+        public void ConditionIsMetTest()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            TestStep("Test Condition Is Met - PASS", () =>
+            {
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentSettings.EnvironmentInfo.BaseUrl);
+                WaitUtilities.ConditionIsMet(ExpectedConditions.TitleContains("Login Page | Test Creator - TestYou"));
+            });
+
+            TestStep("Test Condition Is Met - FAIL", () =>
+            {
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentSettings.EnvironmentInfo.BaseUrl);
+                WaitUtilities.ConditionIsMet(ExpectedConditions.TitleContains("Login Page | Test Creator - TestYou - Mistake"));
+            });
         }
 
         [Test]
-        public void Test04()
+        public void TestFatalTestingException()
         {
-            Logger.Info($"Test02");
-            Driver.GetDriver().Navigate().GoToUrl(BaseUrl);
+            TestStep("Test Fatal Exception", () =>
+            {
+                Driver.GetDriver().Navigate().GoToUrl(EnvironmentSettings.EnvironmentInfo.BaseUrl);
+
+                if (!new HomePage().ProfileFirstName.IsElementPresent())
+                    throw new FatalTestingException("ProfileFirstName IsElementAbsent: ");
+            });
         }
     }
 }
