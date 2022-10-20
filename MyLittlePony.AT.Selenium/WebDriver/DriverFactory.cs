@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using MyLittlePony.AT.Selenium.WebDriver.ConfModel;
 using MyLittlePony.AT.Selenium.WebDriver.Enum;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
 
 namespace MyLittlePony.AT.Selenium.WebDriver
 {
@@ -20,7 +23,7 @@ namespace MyLittlePony.AT.Selenium.WebDriver
         public IWebDriver CreateDriver()
         {
             return _config.DriverType switch
-            {
+            {              
                 DriverType.Chrome => CreateChromeDriver(headless: false),
                 DriverType.ChromeHeadless => CreateChromeDriver(headless: true),
                 DriverType.Firefox => CreateFirefoxDriver(headless: false),
@@ -36,6 +39,8 @@ namespace MyLittlePony.AT.Selenium.WebDriver
 
         private IWebDriver CreateChromeDriver(bool headless)
         {
+            IWebDriver driver;
+
             var options = new ChromeOptions();
             options.AddArgument(_config.Maximize ? "start-maximized" : $"window-size={_config.Height},{_config.Width}");
             options.AddArgument("--disable-extensions");
@@ -43,13 +48,30 @@ namespace MyLittlePony.AT.Selenium.WebDriver
             options.SetLoggingPreference(LogType.Performance, LogLevel.All);
             options.AddUserProfilePreference("download.prompt_for_download", false);
 
-            if (headless)
+            if (!_config.RunRemote && headless)
             {
                 options.AddArgument("headless");
                 options.AddArgument("disable-gpu");
             }
+                       
+            if (_config.RunRemote)
+            {
+                var ltOptions = new Dictionary<string, object>();
+                ltOptions.Add("os", "Windows");
+                ltOptions.Add("osVersion", "10");
+                ltOptions.Add("local", "false");
+                ltOptions.Add("seleniumVersion", _config.RemoteDriverInfo.SeleniumVersion);
+                ltOptions.Add("enableVNC", _config.RemoteDriverInfo.EnableVNC);
+                ltOptions.Add("name", TestContext.CurrentContext.Test.Name);
+                ltOptions.Add("enableVideo", _config.RemoteDriverInfo.EnableVideo);
+                options.AddAdditionalOption("selenoid:options", ltOptions);
 
-            return new ChromeDriver(options);
+                driver = new RemoteWebDriver(_config.RemoteDriverInfo.Url, options);
+            }               
+            else
+                driver = new ChromeDriver(options);
+
+            return driver;
         }
 
         private IWebDriver CreateEdgeDriver(bool headless)
@@ -67,29 +89,51 @@ namespace MyLittlePony.AT.Selenium.WebDriver
                 options.AddArgument("disable-gpu");
             }
 
+            if (_config.RunRemote)
+                throw new NotImplementedException("EdgeDriver is not ready to run on remote");
+
             return new EdgeDriver(options);
         }
 
         private IWebDriver CreateFirefoxDriver(bool headless)
         {
+            IWebDriver driver;
+
             var options = new FirefoxOptions();
             options.AddArgument(_config.Maximize ? "start-maximized" : $"window-size={_config.Height},{_config.Width}");
             options.AddArgument("-disable-extensions");
             options.SetLoggingPreference(LogType.Browser, LogLevel.All);
             options.SetLoggingPreference(LogType.Performance, LogLevel.All);
-            //options.AddUserProfilePreference("download.prompt_for_download", false);
+            //options.AddUserProfilePreference("download.prompt_for_download", false);                   
 
-            if (headless)
+            var driverService = FirefoxDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;                     
+
+            if (!_config.RunRemote && headless)
             {
                 options.AddArgument("headless");
                 options.AddArgument("disable-gpu");
             }
 
-            var driverService = FirefoxDriverService.CreateDefaultService();
-            driverService.HideCommandPromptWindow = true;
+            if (_config.RunRemote)
+            {
+                var ltOptions = new Dictionary<string, object>();
+                ltOptions.Add("os", "Windows");
+                ltOptions.Add("osVersion", "10");
+                ltOptions.Add("local", "false");
+                ltOptions.Add("seleniumVersion", _config.RemoteDriverInfo.SeleniumVersion);
+                ltOptions.Add("enableVNC", _config.RemoteDriverInfo.EnableVNC);
+                ltOptions.Add("name", TestContext.CurrentContext.Test.Name);
+                ltOptions.Add("enableVideo", _config.RemoteDriverInfo.EnableVideo);
+                options.AddAdditionalOption("selenoid:options", ltOptions);
 
-            return new FirefoxDriver(driverService, options);
-        }
+                driver = new RemoteWebDriver(_config.RemoteDriverInfo.Url, options);
+            }
+            else
+                driver = new FirefoxDriver(driverService, options);
+
+            return driver;
+        }        
         #endregion
     }
 }

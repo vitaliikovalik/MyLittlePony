@@ -37,8 +37,11 @@ namespace MyLittlePony.AT.Selenium.WebDriver
         {
             string driverName;
 
+            if (DriverSettings.DriverInfo.RunRemote)
+                return;
+
             switch (type)
-            {
+            {                
                 case DriverType.Chrome:
                 case DriverType.ChromeHeadless:
                     driverName = "chromedriver";
@@ -50,9 +53,9 @@ namespace MyLittlePony.AT.Selenium.WebDriver
                 case DriverType.Edge:
                 case DriverType.EdgeHeadless:
                     driverName = "msedgewebview2";
-                    break;
+                    break;                              
                 case DriverType.InternetExplorer:
-                    throw new NotImplementedException($"'{type}' is not implemented yet!");
+                    throw new NotImplementedException($"'{type}' is not implemented yet!");               
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }

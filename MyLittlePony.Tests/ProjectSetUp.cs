@@ -2,7 +2,7 @@
 using MyLittlePony.AT.Selenium.WebDriver;
 using NUnit.Framework;
 
-[assembly: LevelOfParallelism(6)]
+[assembly: LevelOfParallelism(2)]
 namespace MyLittlePony.Tests
 {
     [SetUpFixture]
