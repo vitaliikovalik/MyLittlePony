@@ -5,7 +5,7 @@ using OpenQA.Selenium.Appium.iOS;
 
 namespace AT.Appium.MobileDriver
 {
-    public class Class1
+    public class AppInitializer
     {
         private static AppiumDriver<AppiumWebElement>? _app;
 
