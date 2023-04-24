@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Selenium.Support" Version="4.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AT.Framework\AT.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WebElement\CustomElements\" />
+  </ItemGroup>
+
+</Project>
